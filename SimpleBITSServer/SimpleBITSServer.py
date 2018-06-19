@@ -195,6 +195,10 @@ class SimpleBITSRequestHandler(SimpleHTTPRequestHandler):
     supported_protocols = ["{7df0354d-249b-430f-820d-3d2a9bef4931}"]  # The only existing protocol version to date
     fragment_size_limit = 100*1024*1024  # bytes
 
+    def __init__(self,*args,**kwargs):
+        self.sessions = dict()
+	SimpleHTTPRequestHandler.__init__(self,*args,**kwargs)
+
     def __send_response(self, headers_dict={}, status_code=HTTPStatus.OK, data=""):
         """
             Sends server response w/ headers and status code
@@ -332,8 +336,8 @@ class SimpleBITSRequestHandler(SimpleHTTPRequestHandler):
             K_CONTENT_LENGTH: '0'
             }
         
-        if not getattr(self, "sessions", False):
-            self.sessions = dict()
+#        if not getattr(self, "sessions", False):
+#            self.sessions = dict()
         try:
             # check if server's protocol version is supported in client
             client_supported_protocols = \
